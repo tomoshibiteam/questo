@@ -1,0 +1,17 @@
+-- Add price to Quest
+ALTER TABLE "Quest"
+ADD COLUMN IF NOT EXISTS "priceYen" INTEGER NOT NULL DEFAULT 2000;
+
+-- Extend PlayStatus enum
+DO $$
+BEGIN
+  ALTER TYPE "PlayStatus" ADD VALUE IF NOT EXISTS 'cancelled';
+EXCEPTION
+  WHEN duplicate_object THEN NULL;
+END $$;
+
+-- Add payment and timestamps to PlaySession
+ALTER TABLE "PlaySession"
+ADD COLUMN IF NOT EXISTS "paymentMethod" TEXT,
+ADD COLUMN IF NOT EXISTS "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ADD COLUMN IF NOT EXISTS "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP;

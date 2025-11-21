@@ -1,0 +1,24 @@
+<svg width="1200" height="800" viewBox="0 0 1200 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <linearGradient id="qp2" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#F97316" stop-opacity="0.25"/>
+    <stop offset="100%" stop-color="#2563EB" stop-opacity="0.32"/>
+  </linearGradient>
+</defs>
+<rect width="1200" height="800" rx="40" fill="#0F172A"/>
+<rect x="24" y="24" width="1152" height="752" rx="32" fill="url(#qp2)"/>
+<rect x="80" y="120" width="320" height="420" rx="32" fill="#1E293B" fill-opacity="0.85"/>
+<rect x="120" y="160" width="240" height="120" rx="18" fill="#F8FAFC" fill-opacity="0.92"/>
+<rect x="120" y="300" width="240" height="36" rx="12" fill="#10B981" fill-opacity="0.9"/>
+<rect x="120" y="352" width="180" height="28" rx="10" fill="#F97316" fill-opacity="0.9"/>
+<rect x="120" y="396" width="160" height="24" rx="10" fill="#38BDF8" fill-opacity="0.9"/>
+<rect x="460" y="140" width="640" height="46" rx="14" fill="#F8FAFC" fill-opacity="0.92"/>
+<rect x="460" y="204" width="560" height="32" rx="12" fill="#10B981" fill-opacity="0.7"/>
+<rect x="460" y="252" width="420" height="28" rx="12" fill="#22D3EE" fill-opacity="0.7"/>
+<rect x="460" y="300" width="520" height="28" rx="12" fill="#F97316" fill-opacity="0.7"/>
+<path d="M480 520C560 464 700 456 820 400C960 328 1080 340 1120 380" stroke="#10B981" stroke-width="12" stroke-linecap="round" opacity="0.8"/>
+<path d="M500 600C620 540 760 560 900 520C1040 484 1100 520 1140 560" stroke="#38BDF8" stroke-width="10" stroke-linecap="round" opacity="0.7"/>
+<circle cx="980" cy="620" r="54" fill="#F8FAFC" opacity="0.9"/>
+<text x="180" y="530" fill="#F8FAFC" font-size="20" font-weight="700">Community Mission</text>
+<text x="940" y="630" fill="#0F172A" font-size="18" font-weight="700">Impact</text>
+</svg>

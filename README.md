@@ -1,36 +1,76 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Questo Web プロトタイプ
 
-## Getting Started
+街歩き × 謎解きアプリ「Questo」の動くモック (Web 版) です。  
+プレイヤーはスマホブラウザでクエストを選び、ストーリーと謎を順に解き進めます。クリエイター / 運営は管理画面からクエストとステップを登録できます。
 
-First, run the development server:
+## 主要機能
+- プレイヤー: クエスト一覧 → 詳細 → プレイ (ストーリー / 謎 / マップ / ヒント / 解答)。
+- 進行状態: クエストごとに現在ステップとヒント使用数を localStorage に保存。
+- 管理: `/admin` 配下で一覧・新規作成・編集、ステップ編集。簡易パスワードゲート (`ADMIN_PASSWORD`)。
+- データ: Supabase 接続があれば CRUD、ない場合はダミーデータでデモ表示。
+- マップ: Leaflet + OpenStreetMap でステップの位置をピン表示。
 
+## 技術スタック
+- Next.js 16 (App Router) + TypeScript + React 19
+- Tailwind CSS (v4) でモバイルファースト UI
+- supabase-js (PostgREST) / local ダミーデータ
+- react-leaflet + Leaflet
+
+## セットアップ
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 環境変数 (`.env.local`)
+```
+NEXT_PUBLIC_SUPABASE_URL=...
+NEXT_PUBLIC_SUPABASE_ANON_KEY=...
+ADMIN_PASSWORD=your-password
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Supabase テーブル例 (SQL)
+```sql
+create table quests (
+  id uuid primary key default gen_random_uuid(),
+  title text not null,
+  slug text unique,
+  city text,
+  summary text,
+  theme text,
+  estimated_duration_min int,
+  estimated_distance_km float,
+  difficulty int,
+  created_at timestamp with time zone default now()
+);
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+create table quest_steps (
+  id uuid primary key default gen_random_uuid(),
+  quest_id uuid references quests(id) on delete cascade,
+  "order" int,
+  lat float,
+  lng float,
+  location_hint text,
+  story_text text,
+  puzzle_text text,
+  answer text,
+  hint_text text,
+  created_at timestamp with time zone default now()
+);
+```
 
-## Learn More
+## デモデータ
+- 「二色浜ビーチクリーン探偵ゲーム」を同梱。Supabase 未設定でもプレイ確認できます。
 
-To learn more about Next.js, take a look at the following resources:
+## ディレクトリ
+- `src/app` … App Router (`/` プレイヤー, `/quests/[id]`, `/play/[id]`, `/admin/*`)
+- `components` … UI パーツ (カード、フォーム、マップ、進行 UI)
+- `lib` … Supabase クライアント、リポジトリ、localStorage ユーティリティ、ダミーデータ
+- `types` … 型定義
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 想定ワークフロー
+1. ダミーデータで一覧・プレイの UX を確認
+2. Supabase を用意し環境変数を設定 → CRUD/管理画面で登録・更新
+3. Vercel へデプロイして運用をイメージ
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

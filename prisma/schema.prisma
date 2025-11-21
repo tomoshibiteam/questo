@@ -1,0 +1,188 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String   @id @default(cuid())
+  name           String?
+  email          String   @unique
+  hashedPassword String
+  role           UserRole @default(user)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  applications   CreatorApplication[]
+  quests         Quest[]
+  playSessions   PlaySession[]
+  accounts       Account[]
+  sessions       Session[]
+}
+
+model CreatorApplication {
+  id           String                      @id @default(cuid())
+  userId       String
+  user         User                        @relation(fields: [userId], references: [id])
+  displayName  String
+  bio          String
+  area         String
+  concept      String
+  socialIssues String
+  status       CreatorApplicationStatus    @default(pending)
+  createdAt    DateTime                    @default(now())
+  updatedAt    DateTime                    @updatedAt
+}
+
+model Quest {
+  id                 String       @id @default(cuid())
+  creatorId          String
+  creator            User         @relation(fields: [creatorId], references: [id])
+  title              String
+  subtitle           String?
+  city               String
+  summary            String
+  theme              QuestTheme
+  durationMin        Int
+  distanceKm         Float
+  recommendedPlayers String?
+  minAge             String?
+  brand              String?
+  priceYen           Int          @default(2000)
+  status             QuestStatus  @default(draft)
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+  steps              QuestStep[]
+  missions           Mission[]
+  playSessions       PlaySession[]
+  slug               String       @unique
+}
+
+model QuestStep {
+  id               String      @id @default(cuid())
+  questId          String
+  quest            Quest       @relation(fields: [questId], references: [id])
+  order            Int
+  lat              Float
+  lng              Float
+  placeName        String
+  placeDescription String
+  storyText        String
+  puzzleText       String
+  answer           String
+  answerType       AnswerType  @default(exact)
+  hint1            String?
+  hint2            String?
+  missions         Mission[]
+}
+
+model Mission {
+  id            String      @id @default(cuid())
+  questId       String
+  quest         Quest       @relation(fields: [questId], references: [id])
+  stepId        String?
+  step          QuestStep?  @relation(fields: [stepId], references: [id])
+  type          MissionType
+  title         String
+  description   String
+  impactPoints  Int
+}
+
+model PlaySession {
+  id             String      @id @default(cuid())
+  userId         String?
+  user           User?       @relation(fields: [userId], references: [id])
+  questId        String
+  quest          Quest       @relation(fields: [questId], references: [id])
+  startedAt      DateTime    @default(now())
+  finishedAt     DateTime?
+  status         PlayStatus  @default(in_progress)
+  paymentMethod  String?
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+}
+
+enum UserRole {
+  user
+  creator
+  admin
+}
+
+enum CreatorApplicationStatus {
+  pending
+  approved
+  denied
+}
+
+enum QuestStatus {
+  draft
+  pending_review
+  published
+  archived
+  rejected
+}
+
+enum QuestTheme {
+  tourism
+  social_issue
+  environment
+  education
+  other
+}
+
+enum AnswerType {
+  exact
+  case_insensitive
+  number
+}
+
+enum MissionType {
+  cleanup
+  shop_visit
+  quiz
+  ngo_info
+  other
+}
+
+enum PlayStatus {
+  in_progress
+  completed
+  cancelled
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}

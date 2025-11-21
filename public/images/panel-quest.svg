@@ -1,0 +1,18 @@
+<svg width="800" height="600" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="800" height="600" rx="32" fill="#ECFEF3"/>
+<rect x="32" y="32" width="736" height="536" rx="24" fill="white" stroke="#D1FAE5" stroke-width="2"/>
+<rect x="64" y="64" width="320" height="200" rx="20" fill="#A5F3FC" fill-opacity="0.8"/>
+<rect x="96" y="96" width="256" height="136" rx="16" fill="white" fill-opacity="0.9"/>
+<rect x="416" y="80" width="288" height="56" rx="14" fill="#10B981" fill-opacity="0.9"/>
+<rect x="416" y="160" width="168" height="36" rx="10" fill="#0EA5E9" fill-opacity="0.85"/>
+<rect x="416" y="208" width="210" height="36" rx="10" fill="#34D399" fill-opacity="0.8"/>
+<rect x="64" y="296" width="672" height="32" rx="12" fill="#F97316" fill-opacity="0.16"/>
+<rect x="64" y="352" width="672" height="32" rx="12" fill="#10B981" fill-opacity="0.14"/>
+<rect x="64" y="408" width="672" height="32" rx="12" fill="#0EA5E9" fill-opacity="0.14"/>
+<circle cx="120" cy="312" r="12" fill="#10B981"/>
+<circle cx="120" cy="368" r="12" fill="#0EA5E9"/>
+<circle cx="120" cy="424" r="12" fill="#F97316"/>
+<text x="160" y="318" fill="#0F172A" font-size="16" font-weight="600" opacity="0.8">クエストを選択</text>
+<text x="160" y="374" fill="#0F172A" font-size="16" font-weight="600" opacity="0.8">街を歩いて謎を解く</text>
+<text x="160" y="430" fill="#0F172A" font-size="16" font-weight="600" opacity="0.8">社会課題ミッションに参加</text>
+</svg>
