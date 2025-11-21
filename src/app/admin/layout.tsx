@@ -6,9 +6,7 @@ type Props = {
 };
 
 // 管理画面のレイアウト。サーバー側で認可判定を行い、未認証なら簡易ログインフォームを表示。
-export default async function AdminLayout({
-  children,
-}: Props) {
+export default async function AdminLayout({ children }: Props) {
   const authed = await isAuthed();
 
   return (
@@ -18,9 +16,7 @@ export default async function AdminLayout({
           <p className="text-xs font-semibold uppercase tracking-wide text-emerald-700">
             Admin
           </p>
-          <h1 className="text-2xl font-semibold text-slate-900">
-            クエスト管理
-          </h1>
+          <h1 className="text-2xl font-semibold text-slate-900">クエスト管理</h1>
           <p className="text-sm text-slate-600">
             クエストの登録・編集、ステップの管理を行います。
           </p>
