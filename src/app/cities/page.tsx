@@ -2,13 +2,23 @@ import CityCard from "@/components/cards/CityCard";
 import SectionHeading from "@/components/SectionHeading";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = "force-dynamic"; // ビルド時のDB接続失敗を避けるため動的レンダリング
+
 export default async function CitiesPage() {
-  const cityGroups = await prisma.quest.groupBy({
-    by: ["city"],
-    where: { status: "published" },
-    _count: true,
-  });
-  const cities = cityGroups.map((c) => ({ name: c.city, count: c._count }));
+  let cities: { name: string; count: number }[] = [];
+
+  // DB接続に失敗してもビルドが落ちないようにフォールバックする
+  try {
+    const cityGroups = await prisma.quest.groupBy({
+      by: ["city"],
+      where: { status: "published" },
+      _count: true,
+    });
+    cities = cityGroups.map((c) => ({ name: c.city, count: c._count }));
+  } catch (error) {
+    console.warn("Failed to fetch cities, falling back to empty list", error);
+    cities = [];
+  }
 
   return (
     <div className="mx-auto max-w-6xl px-4 pb-12 pt-8">
