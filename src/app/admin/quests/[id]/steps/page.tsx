@@ -4,13 +4,13 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 type Props = {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 };
 
 export default async function QuestStepsPage({ params }: Props) {
-  const { id } = params;
+  const { id } = await params;
   const quest = await fetchQuestById(id);
   if (!quest) return notFound();
   const steps = await fetchStepsByQuest(quest.id);

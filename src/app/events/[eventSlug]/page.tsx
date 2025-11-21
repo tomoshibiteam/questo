@@ -4,11 +4,11 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 
 type EventPageProps = {
-  params: { eventSlug: string };
+  params: Promise<{ eventSlug: string }>;
 };
 
 export default async function EventDetailPage({ params }: EventPageProps) {
-  const { eventSlug } = params;
+  const { eventSlug } = await params;
   const event = events.find((e) => e.slug === eventSlug);
   if (!event) return notFound();
   const cityLabel = event.citySlug ? event.citySlug : "Online";

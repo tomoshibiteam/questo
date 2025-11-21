@@ -2,11 +2,11 @@ import { blogPosts } from "@/data/blog";
 import { notFound } from "next/navigation";
 
 type Props = {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 };
 
 export default async function BlogDetailPage({ params }: Props) {
-  const { slug } = params;
+  const { slug } = await params;
   const meta = blogPosts.find((p) => p.slug === slug);
   if (!meta) return notFound();
 
