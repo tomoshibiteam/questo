@@ -8,9 +8,9 @@ import Image from "next/image";
 export default async function CityDetailPage({
   params,
 }: {
-  params: { citySlug: string };
+  params: Promise<{ citySlug: string }>;
 }) {
-  const { citySlug } = params;
+  const { citySlug } = await params;
   const decoded = decodeURIComponent(citySlug).replace(/-/g, "・");
 
   const cityQuests = await prisma.quest.findMany({

@@ -5,9 +5,9 @@ import QuestDetailPageContent from "./QuestDetailPageContent";
 export default async function QuestDetailPage({
   params,
 }: {
-  params: { questSlug: string };
+  params: Promise<{ questSlug: string }>;
 }) {
-  const { questSlug } = params;
+  const { questSlug } = await params;
 
   const quest = await prisma.quest.findUnique({
     where: { slug: questSlug, status: "published" },

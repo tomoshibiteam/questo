@@ -7,14 +7,14 @@ import PlaySessionClient from "@/components/play/PlaySessionClient";
 export default async function PlayPage({
   params,
 }: {
-  params: { sessionId: string };
+  params: Promise<{ sessionId: string }>;
 }) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
     redirect("/login");
   }
 
-  const { sessionId } = params;
+  const { sessionId } = await params;
   if (!sessionId) return notFound();
 
   const playSession = await prisma.playSession.findUnique({

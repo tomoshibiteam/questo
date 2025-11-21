@@ -4,9 +4,9 @@ import { notFound } from "next/navigation";
 export default async function BlogDetailPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const { slug } = params;
+  const { slug } = await params;
   const meta = blogPosts.find((p) => p.slug === slug);
   if (!meta) return notFound();
 

@@ -6,9 +6,9 @@ import Image from "next/image";
 export default async function EventDetailPage({
   params,
 }: {
-  params: { eventSlug: string };
+  params: Promise<{ eventSlug: string }>;
 }) {
-  const { eventSlug } = params;
+  const { eventSlug } = await params;
   const event = events.find((e) => e.slug === eventSlug);
   if (!event) return notFound();
   const cityLabel = event.citySlug ? event.citySlug : "Online";

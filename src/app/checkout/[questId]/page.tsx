@@ -7,14 +7,14 @@ import CheckoutAction from "./CheckoutAction";
 export default async function CheckoutPage({
   params,
 }: {
-  params: { questId: string };
+  params: Promise<{ questId: string }>;
 }) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
     redirect("/login");
   }
 
-  const questKey = params.questId;
+  const { questId: questKey } = await params;
   if (!questKey) return notFound();
 
   // id でも slug でもヒットするように緩和

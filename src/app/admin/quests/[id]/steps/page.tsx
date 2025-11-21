@@ -6,9 +6,9 @@ import { notFound } from "next/navigation";
 export default async function QuestStepsPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const { id } = params;
+  const { id } = await params;
   const quest = await fetchQuestById(id);
   if (!quest) return notFound();
   const steps = await fetchStepsByQuest(quest.id);
