@@ -1,4 +1,5 @@
 import Badge from "@/components/Badge";
+import Link from "next/link";
 
 type CityStat = {
   name: string;
@@ -14,7 +15,10 @@ export default function CityCard({ city }: { city: CityStat }) {
         : "公開準備中のシティトレイルです。";
 
   return (
-    <div className="flex flex-col rounded-2xl border border-slate-100 bg-white/80 p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+    <Link
+      href={`/cities/${encodeURIComponent(city.name.replace(/\s+/g, "-"))}`}
+      className="flex flex-col rounded-2xl border border-slate-100 bg-white/80 p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+    >
       <div className="flex items-center justify-between text-xs text-slate-500">
         <span>都市</span>
         <span>{city.count} クエスト</span>
@@ -25,6 +29,6 @@ export default function CityCard({ city }: { city: CityStat }) {
         <Badge color="slate">シティトレイル</Badge>
         {city.count > 0 && <Badge color="slate">公開中</Badge>}
       </div>
-    </div>
+    </Link>
   );
 }

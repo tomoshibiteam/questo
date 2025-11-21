@@ -6,6 +6,7 @@ import ImpactSection from "@/components/home/ImpactSection";
 import EventsSection from "@/components/home/EventsSection";
 import ClosingCtaSection from "@/components/home/ClosingCtaSection";
 import { getPublishedQuests, getStats } from "@/lib/queries";
+import PageGrid from "@/components/PageGrid";
 
 export default function HomePage() {
   return (
@@ -17,6 +18,9 @@ export default function HomePage() {
       <ImpactSectionWrapper />
       <EventsSection />
       <ClosingCtaSection />
+      <div className="mx-auto max-w-7xl px-4 pb-12">
+        <PageGrid />
+      </div>
     </div>
   );
 }
