@@ -1,10 +1,6 @@
 import type { Quest, QuestStep } from "@prisma/client";
+import { sampleQuests, sampleQuestById, sampleStepsByQuest } from "./sampleData";
 import { isSupabaseEnabled, getSupabaseClient } from "./supabaseClient";
-import {
-  sampleQuests,
-  sampleQuestById,
-  sampleStepsByQuest,
-} from "./sampleData";
 
 type QuestRow = {
   id: string;
@@ -15,7 +11,6 @@ type QuestRow = {
   theme?: string | null;
   estimated_duration_min?: number | null;
   estimated_distance_km?: number | null;
-  difficulty?: number | null;
   created_at?: string | null;
 };
 
@@ -36,14 +31,21 @@ type QuestStepRow = {
 const mapQuest = (row: QuestRow): Quest => ({
   id: row.id,
   title: row.title,
-  slug: row.slug ?? undefined,
+  slug: row.slug ?? "",
   city: row.city ?? "",
   summary: row.summary ?? "",
   theme: (row.theme as Quest["theme"]) ?? "other",
-  estimatedDurationMin: row.estimated_duration_min ?? 0,
-  estimatedDistanceKm: row.estimated_distance_km ?? 0,
-  difficulty: row.difficulty ?? 1,
-  createdAt: row.created_at ?? undefined,
+  durationMin: row.estimated_duration_min ?? 0,
+  distanceKm: row.estimated_distance_km ?? 0,
+  priceYen: 2000,
+  createdAt: row.created_at ? new Date(row.created_at) : new Date(),
+  updatedAt: row.created_at ? new Date(row.created_at) : new Date(),
+  status: "published",
+  creatorId: "",
+  subtitle: null,
+  recommendedPlayers: null,
+  minAge: null,
+  brand: null,
 });
 
 const mapStep = (row: QuestStepRow): QuestStep => ({
@@ -52,33 +54,35 @@ const mapStep = (row: QuestStepRow): QuestStep => ({
   order: row.order,
   lat: row.lat,
   lng: row.lng,
-  locationHint: row.location_hint,
+  placeName: row.location_hint,
+  placeDescription: row.location_hint,
   storyText: row.story_text,
   puzzleText: row.puzzle_text,
   answer: row.answer,
-  hintText: row.hint_text,
-  createdAt: row.created_at ?? undefined,
+  answerType: "exact",
+  hint1: row.hint_text,
+  hint2: null,
 });
 
 export async function fetchQuests(): Promise<Quest[]> {
-  if (!isSupabaseEnabled) return sampleQuests;
+  if (!isSupabaseEnabled) return sampleQuests as unknown as Quest[];
   const supabase = getSupabaseClient();
-  if (!supabase) return sampleQuests;
+  if (!supabase) return sampleQuests as unknown as Quest[];
   const { data, error } = await supabase
     .from("quests")
     .select("*")
     .order("created_at", { ascending: false });
   if (error || !data) {
     console.error("Failed to fetch quests from Supabase", error);
-    return sampleQuests;
+    return sampleQuests as unknown as Quest[];
   }
   return data.map(mapQuest);
 }
 
 export async function fetchQuestById(id: string): Promise<Quest | null> {
-  if (!isSupabaseEnabled) return sampleQuestById(id);
+  if (!isSupabaseEnabled) return (sampleQuestById(id) as unknown as Quest) ?? null;
   const supabase = getSupabaseClient();
-  if (!supabase) return sampleQuestById(id);
+  if (!supabase) return (sampleQuestById(id) as unknown as Quest) ?? null;
   const { data, error } = await supabase
     .from("quests")
     .select("*")
@@ -87,15 +91,15 @@ export async function fetchQuestById(id: string): Promise<Quest | null> {
     .maybeSingle();
   if (error || !data) {
     console.error("Failed to fetch quest", error);
-    return sampleQuestById(id);
+    return (sampleQuestById(id) as unknown as Quest) ?? null;
   }
   return mapQuest(data);
 }
 
 export async function fetchStepsByQuest(questId: string): Promise<QuestStep[]> {
-  if (!isSupabaseEnabled) return sampleStepsByQuest(questId);
+  if (!isSupabaseEnabled) return (sampleStepsByQuest(questId) as unknown as QuestStep[]);
   const supabase = getSupabaseClient();
-  if (!supabase) return sampleStepsByQuest(questId);
+  if (!supabase) return (sampleStepsByQuest(questId) as unknown as QuestStep[]);
   const { data, error } = await supabase
     .from("quest_steps")
     .select("*")
@@ -103,7 +107,7 @@ export async function fetchStepsByQuest(questId: string): Promise<QuestStep[]> {
     .order("order", { ascending: true });
   if (error || !data) {
     console.error("Failed to fetch steps", error);
-    return sampleStepsByQuest(questId);
+    return (sampleStepsByQuest(questId) as unknown as QuestStep[]);
   }
   return data.map(mapStep);
 }

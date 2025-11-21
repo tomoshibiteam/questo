@@ -5,12 +5,12 @@ import { redirect } from "next/navigation";
 
 const ADMIN_COOKIE = "questo-admin";
 
-type LoginState = {
+export type LoginState = {
   error?: string;
 };
 
 export async function loginAdmin(
-  _prevState: LoginState,
+  _prevState: LoginState | void,
   formData: FormData,
 ): Promise<LoginState | void> {
   "use server";

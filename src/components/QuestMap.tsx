@@ -10,9 +10,9 @@ import {
 } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import iconRetinaUrl from "leaflet/dist/images/marker-icon-2x.png";
-import iconUrl from "leaflet/dist/images/marker-icon.png";
-import shadowUrl from "leaflet/dist/images/marker-shadow.png";
+import iconRetina from "leaflet/dist/images/marker-icon-2x.png";
+import iconPng from "leaflet/dist/images/marker-icon.png";
+import shadowPng from "leaflet/dist/images/marker-shadow.png";
 
 type Props = {
   lat: number;
@@ -23,9 +23,9 @@ type Props = {
 
 // Next.js で Leaflet のアイコンパスが崩れないよう初期化する。
 const defaultIcon = new L.Icon({
-  iconRetinaUrl,
-  iconUrl,
-  shadowUrl,
+  iconRetinaUrl: typeof iconRetina === "string" ? iconRetina : iconRetina.src,
+  iconUrl: typeof iconPng === "string" ? iconPng : iconPng.src,
+  shadowUrl: typeof shadowPng === "string" ? shadowPng : shadowPng.src,
   iconSize: [25, 41],
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],

@@ -1,5 +1,5 @@
 import QuestCard from "@/components/cards/QuestCard";
-import { Quest } from "@/types/content";
+import { Quest } from "@prisma/client";
 
 type Props = {
   quests: Quest[];

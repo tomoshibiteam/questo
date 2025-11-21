@@ -2,8 +2,9 @@
 
 import { useFormState, useFormStatus } from "react-dom";
 import { loginAdmin } from "@/app/admin/actions";
+import type { LoginState } from "@/app/admin/actions";
 
-const initialState = { error: "" };
+const initialState: LoginState = {};
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -19,7 +20,10 @@ function SubmitButton() {
 }
 
 export default function AdminLogin() {
-  const [state, formAction] = useFormState(loginAdmin, initialState);
+  const [state, formAction] = useFormState<LoginState | void, FormData>(
+    loginAdmin,
+    initialState,
+  );
 
   return (
     <form
