@@ -5,6 +5,7 @@ const { hash } = require("bcryptjs");
 const prisma = new PrismaClient();
 
 async function main() {
+  console.log("Seeding database for TOMOSHIBI...");
   const hashed = await hash("password123", 10);
 
   await prisma.user.upsert({
@@ -141,7 +142,7 @@ async function main() {
     },
   });
 
-  console.log("Seed completed");
+  console.log("Seed completed: nishikinohama-clean quest ready");
 }
 
 main()
