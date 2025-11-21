@@ -1,12 +1,15 @@
 import AdminLogin from "@/components/AdminLogin";
 import { isAuthed } from "./actions";
 
-export default function AdminLayout({
-  children,
-}: {
+type Props = {
   children: React.ReactNode;
-}) {
-  const authedPromise = isAuthed();
+};
+
+// 管理画面のレイアウト。サーバー側で認可判定を行い、未認証なら簡易ログインフォームを表示。
+export default async function AdminLayout({
+  children,
+}: Props) {
+  const authed = await isAuthed();
 
   return (
     <div className="bg-slate-50">
@@ -19,11 +22,10 @@ export default function AdminLayout({
             クエスト管理
           </h1>
           <p className="text-sm text-slate-600">
-          クエストの登録・編集、ステップの管理を行います。
-        </p>
-      </div>
-        {/* サーバー側で判定 */}
-        {(await authedPromise) ? children : <AdminLogin />}
+            クエストの登録・編集、ステップの管理を行います。
+          </p>
+        </div>
+        {authed ? children : <AdminLogin />}
       </section>
     </div>
   );
