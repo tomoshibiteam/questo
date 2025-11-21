@@ -2,14 +2,12 @@ import QuestForm from "@/components/QuestForm";
 import { fetchQuestById } from "@/lib/questRepository";
 import { notFound } from "next/navigation";
 
-type Props = {
-  params: Promise<{
-    id: string;
-  }>;
-};
-
-export default async function EditQuestPage({ params }: Props) {
-  const { id } = await params;
+export default async function EditQuestPage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const { id } = params;
   const quest = await fetchQuestById(id);
   if (!quest) return notFound();
 

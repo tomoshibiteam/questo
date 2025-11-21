@@ -3,14 +3,12 @@ import { fetchQuestById, fetchStepsByQuest } from "@/lib/questRepository";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-type Props = {
-  params: Promise<{
-    id: string;
-  }>;
-};
-
-export default async function QuestStepsPage({ params }: Props) {
-  const { id } = await params;
+export default async function QuestStepsPage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const { id } = params;
   const quest = await fetchQuestById(id);
   if (!quest) return notFound();
   const steps = await fetchStepsByQuest(quest.id);

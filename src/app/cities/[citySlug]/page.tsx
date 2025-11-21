@@ -5,14 +5,12 @@ import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 
-type CityPageProps = {
-  params: Promise<{
-    citySlug: string;
-  }>;
-};
-
-export default async function CityDetailPage({ params }: CityPageProps) {
-  const { citySlug } = await params;
+export default async function CityDetailPage({
+  params,
+}: {
+  params: { citySlug: string };
+}) {
+  const { citySlug } = params;
   const decoded = decodeURIComponent(citySlug).replace(/-/g, "・");
 
   const cityQuests = await prisma.quest.findMany({

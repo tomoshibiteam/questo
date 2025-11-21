@@ -3,12 +3,12 @@ import SectionHeading from "@/components/SectionHeading";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 
-type EventPageProps = {
-  params: Promise<{ eventSlug: string }>;
-};
-
-export default async function EventDetailPage({ params }: EventPageProps) {
-  const { eventSlug } = await params;
+export default async function EventDetailPage({
+  params,
+}: {
+  params: { eventSlug: string };
+}) {
+  const { eventSlug } = params;
   const event = events.find((e) => e.slug === eventSlug);
   if (!event) return notFound();
   const cityLabel = event.citySlug ? event.citySlug : "Online";
