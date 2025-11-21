@@ -40,7 +40,7 @@ export default async function AdminPage() {
                 {quest.title}
               </h3>
               <p className="text-xs text-slate-500">
-                {quest.city} / {quest.theme} / {quest.estimatedDurationMin}分
+                {quest.city} / {quest.theme} / {quest.durationMin}分
               </p>
             </div>
             <div className="flex gap-2 text-sm">
