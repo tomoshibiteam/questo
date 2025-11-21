@@ -3,6 +3,8 @@ import { authOptions } from "@/lib/authOptions";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 
+export const dynamic = "force-dynamic";
+
 async function applyAction(formData: FormData) {
   "use server";
   const session = await getServerSession(authOptions);

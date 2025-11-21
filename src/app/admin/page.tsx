@@ -1,23 +1,19 @@
 import Link from "next/link";
 import { fetchQuests } from "@/lib/questRepository";
-import { isSupabaseEnabled } from "@/lib/supabaseClient";
 import { logoutAdmin } from "./actions";
+
+export const dynamic = "force-dynamic";
 
 export default async function AdminPage() {
   const quests = await fetchQuests();
 
   return (
     <div className="space-y-5">
-      <div className="flex items-center justify-between">
-        <div className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-800">
-          {isSupabaseEnabled ? "Supabase 接続中" : "ダミーデータモード"}
-        </div>
-        <form action={logoutAdmin}>
-          <button className="text-xs font-semibold text-slate-500 underline underline-offset-4">
-            ログアウト
-          </button>
-        </form>
-      </div>
+      <form action={logoutAdmin} className="flex justify-end">
+        <button className="text-xs font-semibold text-slate-500 underline underline-offset-4">
+          ログアウト
+        </button>
+      </form>
 
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-semibold text-slate-900">クエスト一覧</h2>

@@ -3,6 +3,8 @@ import { prisma } from "@/lib/prisma";
 import { authOptions } from "@/lib/authOptions";
 import { getServerSession } from "next-auth";
 
+export const dynamic = "force-dynamic";
+
 export default async function CreatorDashboardPage() {
   const session = await getServerSession(authOptions);
   const user = session?.user;

@@ -3,14 +3,14 @@ import SectionHeading from "@/components/SectionHeading";
 import { prisma } from "@/lib/prisma";
 import { QuestTheme } from "@prisma/client";
 
-export const dynamic = "force-dynamic"; // DB に依らずビルドを通す
+export const dynamic = "force-dynamic";
 
 type Props = {
-  searchParams: Promise<{ city?: string; theme?: string }>;
+  searchParams?: Promise<{ city?: string; theme?: string } | undefined>;
 };
 
 export default async function QuestsPage({ searchParams }: Props) {
-  const params = await searchParams;
+  const params = (await searchParams) ?? {};
   let quests: Awaited<ReturnType<typeof prisma.quest.findMany>> = [];
   let cities: { city: string; _count: number }[] = [];
 
@@ -25,7 +25,15 @@ export default async function QuestsPage({ searchParams }: Props) {
       orderBy: { createdAt: "desc" },
     });
 
-    cities = await prisma.quest.groupBy({ by: ["city"], _count: true });
+    const cityGroups = await prisma.quest.groupBy({
+      by: ["city"],
+      where: { status: "published" },
+      _count: { _all: true },
+    });
+    cities = cityGroups.map((c) => ({
+      city: c.city,
+      _count: c._count._all ?? 0,
+    }));
   } catch (error) {
     console.warn("Failed to fetch quests, falling back to empty list", error);
     quests = [];

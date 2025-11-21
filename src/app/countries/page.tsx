@@ -2,18 +2,26 @@ import CountryCard from "@/components/cards/CountryCard";
 import SectionHeading from "@/components/SectionHeading";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 export default async function CountriesPage() {
-  const quests = await prisma.quest.findMany({ where: { status: "published" } });
-  const cityCount = new Set(quests.map((q) => q.city)).size;
-  const questCount = quests.length;
-  const countries = [
+  let countries = [
     {
       slug: "japan",
       name: "日本",
-      cityCount,
-      questCount,
+      cityCount: 0,
+      questCount: 0,
     },
   ];
+
+  try {
+    const quests = await prisma.quest.findMany({ where: { status: "published" } });
+    const cityCount = new Set(quests.map((q) => q.city)).size;
+    const questCount = quests.length;
+    countries = [{ ...countries[0], cityCount, questCount }];
+  } catch (error) {
+    console.warn("Failed to fetch countries stats", error);
+  }
 
   return (
     <div className="mx-auto max-w-6xl px-4 pb-12 pt-8">

@@ -2,6 +2,8 @@ import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import QuestDetailPageContent from "./QuestDetailPageContent";
 
+export const dynamic = "force-dynamic";
+
 export default async function QuestDetailPage({
   params,
 }: {

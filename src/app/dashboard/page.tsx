@@ -5,6 +5,8 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 
+export const dynamic = "force-dynamic";
+
 function formatDate(date?: Date | null) {
   if (!date) return "-";
   return new Intl.DateTimeFormat("ja-JP", {

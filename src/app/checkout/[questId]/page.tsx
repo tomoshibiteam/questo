@@ -4,6 +4,8 @@ import { getServerSession } from "next-auth";
 import { notFound, redirect } from "next/navigation";
 import CheckoutAction from "./CheckoutAction";
 
+export const dynamic = "force-dynamic";
+
 export default async function CheckoutPage({
   params,
 }: {
