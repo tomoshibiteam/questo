@@ -25,7 +25,8 @@ export async function loginAdmin(
     return { error: "パスワードが違います。" };
   }
 
-  cookies().set(ADMIN_COOKIE, "true", {
+  const cookieStore = await cookies();
+  cookieStore.set(ADMIN_COOKIE, "true", {
     path: "/admin",
     httpOnly: true,
     maxAge: 60 * 60 * 8,
@@ -36,10 +37,12 @@ export async function loginAdmin(
 
 export async function logoutAdmin() {
   "use server";
-  cookies().delete(ADMIN_COOKIE);
+  const cookieStore = await cookies();
+  cookieStore.delete(ADMIN_COOKIE);
   redirect("/admin");
 }
 
 export async function isAuthed(): Promise<boolean> {
-  return cookies().get(ADMIN_COOKIE)?.value === "true";
+  const cookieStore = await cookies();
+  return cookieStore.get(ADMIN_COOKIE)?.value === "true";
 }
