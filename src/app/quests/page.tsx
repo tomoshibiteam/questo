@@ -11,8 +11,8 @@ type Props = {
 
 export default async function QuestsPage({ searchParams }: Props) {
   const params = await searchParams;
-  let quests = [];
-  let cities = [] as { city: string; _count: number }[];
+  let quests: Awaited<ReturnType<typeof prisma.quest.findMany>> = [];
+  let cities: { city: string; _count: number }[] = [];
 
   // DB接続がなくてもページが表示されるようフォールバック
   try {
