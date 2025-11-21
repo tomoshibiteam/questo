@@ -6,11 +6,11 @@ import { QuestTheme } from "@prisma/client";
 export const dynamic = "force-dynamic"; // DB に依らずビルドを通す
 
 type Props = {
-  searchParams?: { city?: string; theme?: string };
+  searchParams: Promise<{ city?: string; theme?: string }>;
 };
 
 export default async function QuestsPage({ searchParams }: Props) {
-  const params = searchParams ?? {};
+  const params = await searchParams;
   let quests = [];
   let cities = [] as { city: string; _count: number }[];
 
