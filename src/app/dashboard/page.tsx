@@ -1,5 +1,6 @@
 import { authOptions } from "@/lib/authOptions";
 import { prisma } from "@/lib/prisma";
+import { PlayStatus } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
@@ -27,8 +28,9 @@ export default async function DashboardPage() {
 
   // プレイ中は同一クエストを1件（最新の開始日時）だけ表示する
   const activeMap = new Map<string, typeof playSessions[number]>();
+  const activeStatuses: PlayStatus[] = ["in_progress"];
   for (const s of playSessions) {
-    if (s.status === "in_progress" || s.status === "active") {
+    if (activeStatuses.includes(s.status)) {
       const key = s.questId;
       const existing = activeMap.get(key);
       if (!existing || (existing.startedAt && s.startedAt && s.startedAt > existing.startedAt)) {
