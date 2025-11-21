@@ -5,11 +5,13 @@ import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 
-type Props = {
-  params: { citySlug: string };
+type CityPageProps = {
+  params: {
+    citySlug: string;
+  };
 };
 
-export default async function CityDetailPage({ params }: Props) {
+export default async function CityDetailPage({ params }: CityPageProps) {
   const { citySlug } = params;
   const decoded = decodeURIComponent(citySlug).replace(/-/g, "・");
 
@@ -65,7 +67,7 @@ export default async function CityDetailPage({ params }: Props) {
       <section className="mt-10">
         <SectionHeading
           eyebrow="Missions"
-          title={`Why TOMOSHIBI in ${city.name}?`}
+          title={`Why TOMOSHIBI in ${cityName}?`}
           description="この街で取り組みたい社会課題ミッションの例。"
         />
         <ul className="mt-3 space-y-2 text-sm text-slate-700">
