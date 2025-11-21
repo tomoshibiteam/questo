@@ -7,7 +7,6 @@ export const dynamic = "force-dynamic"; // ビルド時のDB接続失敗を避�
 export default async function CitiesPage() {
   let cities: { name: string; count: number }[] = [];
 
-  // DB接続に失敗してもビルドが落ちないようにフォールバックする
   try {
     const cityGroups = await prisma.quest.groupBy({
       by: ["city"],

@@ -3,22 +3,34 @@ import SectionHeading from "@/components/SectionHeading";
 import { prisma } from "@/lib/prisma";
 import { QuestTheme } from "@prisma/client";
 
+export const dynamic = "force-dynamic"; // DB に依らずビルドを通す
+
 type Props = {
-  searchParams: Promise<{ city?: string; theme?: string }>;
+  searchParams?: { city?: string; theme?: string };
 };
 
 export default async function QuestsPage({ searchParams }: Props) {
-  const params = await searchParams;
-  const quests = await prisma.quest.findMany({
-    where: {
-      status: "published",
-      ...(params.city ? { city: params.city } : {}),
-      ...(params.theme ? { theme: params.theme as QuestTheme } : {}),
-    },
-    orderBy: { createdAt: "desc" },
-  });
+  const params = searchParams ?? {};
+  let quests = [];
+  let cities = [] as { city: string; _count: number }[];
 
-  const cities = await prisma.quest.groupBy({ by: ["city"], _count: true });
+  // DB接続がなくてもページが表示されるようフォールバック
+  try {
+    quests = await prisma.quest.findMany({
+      where: {
+        status: "published",
+        ...(params.city ? { city: params.city } : {}),
+        ...(params.theme ? { theme: params.theme as QuestTheme } : {}),
+      },
+      orderBy: { createdAt: "desc" },
+    });
+
+    cities = await prisma.quest.groupBy({ by: ["city"], _count: true });
+  } catch (error) {
+    console.warn("Failed to fetch quests, falling back to empty list", error);
+    quests = [];
+    cities = [];
+  }
 
   return (
     <div className="mx-auto max-w-6xl px-4 pb-12 pt-8">
