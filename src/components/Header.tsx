@@ -8,6 +8,7 @@ import UserMenu from "./UserMenu";
 
 const navItems = [
   { label: "Play", href: "/cities" },
+  { label: "Quests", href: "/quests" },
   { label: "Events", href: "/events" },
   { label: "Creators", href: "/creators" },
   { label: "Partners", href: "/partners" },
