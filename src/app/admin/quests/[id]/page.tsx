@@ -3,13 +3,13 @@ import { fetchQuestById } from "@/lib/questRepository";
 import { notFound } from "next/navigation";
 
 type Props = {
-  params: Promise<{
+  params: {
     id: string;
-  }>;
+  };
 };
 
 export default async function EditQuestPage({ params }: Props) {
-  const { id } = await params;
+  const { id } = params;
   const quest = await fetchQuestById(id);
   if (!quest) return notFound();
 

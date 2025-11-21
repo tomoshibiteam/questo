@@ -5,7 +5,7 @@ import { notFound, redirect } from "next/navigation";
 import CheckoutAction from "./CheckoutAction";
 
 type Props = {
-  params: Promise<{ questId: string }>;
+  params: { questId: string };
 };
 
 export default async function CheckoutPage({ params }: Props) {
@@ -14,7 +14,7 @@ export default async function CheckoutPage({ params }: Props) {
     redirect("/login");
   }
 
-  const { questId: questKey } = await params;
+  const questKey = params.questId;
   if (!questKey) return notFound();
 
   // id でも slug でもヒットするように緩和

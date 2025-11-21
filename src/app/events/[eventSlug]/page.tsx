@@ -3,11 +3,11 @@ import SectionHeading from "@/components/SectionHeading";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 
-type Props = {
+type EventPageProps = {
   params: { eventSlug: string };
 };
 
-export default async function EventDetailPage({ params }: Props) {
+export default async function EventDetailPage({ params }: EventPageProps) {
   const { eventSlug } = params;
   const event = events.find((e) => e.slug === eventSlug);
   if (!event) return notFound();

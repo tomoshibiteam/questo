@@ -3,11 +3,11 @@ import { notFound } from "next/navigation";
 import QuestDetailPageContent from "./QuestDetailPageContent";
 
 type Props = {
-  params: Promise<{ questSlug: string }>;
+  params: { questSlug: string };
 };
 
 export default async function QuestDetailPage({ params }: Props) {
-  const { questSlug } = await params;
+  const { questSlug } = params;
 
   const quest = await prisma.quest.findUnique({
     where: { slug: questSlug, status: "published" },

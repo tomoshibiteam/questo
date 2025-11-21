@@ -4,7 +4,7 @@ import { getServerSession } from "next-auth";
 import { notFound, redirect } from "next/navigation";
 import PlaySessionClient from "@/components/play/PlaySessionClient";
 
-type Props = { params: Promise<{ sessionId: string }> };
+type Props = { params: { sessionId: string } };
 
 export default async function PlayPage({ params }: Props) {
   const session = await getServerSession(authOptions);
@@ -12,7 +12,7 @@ export default async function PlayPage({ params }: Props) {
     redirect("/login");
   }
 
-  const { sessionId } = await params;
+  const { sessionId } = params;
   if (!sessionId) return notFound();
 
   const playSession = await prisma.playSession.findUnique({
